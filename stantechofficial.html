@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stantech — Digital Products & Solutions</title>
+  <meta name="description" content="Stantech: building digital products for Africa — ALPHA.10, Drone Pilot, CRM and more."/>
+  <!-- Theme colors -->
+  <style>
+    /* ===========================
+       Stantech Single-File Website
+       - HTML + CSS + JS combined
+       - Dark theme with blue accents
+       - Responsive layout
+       - Comments included throughout
+       =========================== */
+
+    /* ---- CSS Reset (small) ---- */
+    :root{
+      --bg:#071126; /* deep navy */
+      --panel:#0d1b2b; /* slightly lighter */
+      --muted:#98a7bf;
+      --accent:#0ea5ff; /* blue accent */
+      --accent-2:#00b4ff;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --success: #2dd4bf;
+      --danger: #ff6b6b;
+      --max-width: 1100px;
+      --radius: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      --ease: cubic-bezier(.16,.84,.45,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,var(--bg) 0%, #071634 60%);
+      color: #e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-bottom:80px; /* footer space for small screens */
+    }
+
+    /* ---- layout utilities ---- */
+    .container{max-width:var(--max-width); margin:0 auto; padding:24px;}
+    .row{display:flex;gap:16px;flex-wrap:wrap}
+    .col{flex:1; min-width:0}
+    h1,h2,h3{margin:0 0 12px 0}
+    p{margin:0 0 12px 0;color:var(--muted)}
+
+    /* ---- navigation ---- */
+    header.nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(9,20,34,0.6), rgba(7,13,22,0.4));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 18px rgba(1,6,12,0.5);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:var(--max-width);margin:0 auto}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo {
+      width:44px;height:44px;border-radius:10px;
+      background: linear-gradient(135deg,var(--accent), #0a84ff);
+      display:grid;place-items:center;font-weight:700;font-family:var(--mono);
+      box-shadow: 0 6px 18px rgba(0,160,255,0.08);
+      color:#021226;
+    }
+    .brand h4{margin:0;font-size:16px;letter-spacing:0.6px}
+    nav.menu{display:flex;gap:14px;align-items:center}
+    nav.menu a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px;transition:all .18s var(--ease)}
+    nav.menu a:hover{color:#fff;background:var(--glass)}
+    .cta-btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021226;padding:8px 14px;border-radius:10px;font-weight:600;text-decoration:none;box-shadow:0 8px 28px rgba(13,170,255,0.08)}
+    .hamburger{display:none;border:0;background:transparent;color:var(--muted)}
+    /* small screens nav */
+    @media (max-width:880px){
+      nav.menu{display:none}
+      .hamburger{display:inline-block}
+      .nav-mobile{display:none}
+      .mobile-menu{position:absolute;right:20px;top:68px;background:linear-gradient(180deg,var(--panel),#071226);border-radius:12px;padding:12px;box-shadow:0 12px 36px rgba(0,0,0,0.6)}
+    }
+
+    /* ---- hero ---- */
+    .hero{
+      padding:56px 0;
+      display:flex;align-items:center;gap:28px;
+    }
+    .hero-left{flex:1;min-width:260px}
+    .hero-right{flex:1;display:flex;justify-content:center;align-items:center;min-width:300px}
+    .hero-card{
+      width:100%;max-width:520px;padding:22px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03); box-shadow: 0 16px 40px rgba(3,10,20,0.6);
+      transform:translateY(0); transition:transform .45s var(--ease)
+    }
+    .hero-card:hover{transform:translateY(-6px)}
+    .tagline{color:var(--accent);font-weight:700;margin-bottom:8px}
+    .lead{font-size:20px;margin-bottom:16px}
+    .actions{display:flex;gap:12px;align-items:center}
+    .secondary{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    /* hero visual (project mockup) */
+    .mockup{
+      width:320px;height:440px;border-radius:18px;background:
+        linear-gradient(180deg, rgba(10,20,40,0.9), rgba(8,14,24,0.85));
+      border:1px solid rgba(255,255,255,0.03);
+      padding:14px;box-shadow: 0 20px 60px rgba(5,15,40,0.6);position:relative;
+      overflow:hidden;
+    }
+    .mockup .screen{width:100%;height:100%;border-radius:12px;background:
+      linear-gradient(180deg,#03182b, #042a45);display:flex;flex-direction:column;padding:12px}
+    .pill{height:10px;width:40%;background:rgba(255,255,255,0.04);border-radius:999px;margin-bottom:10px}
+    .mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .mock-card{height:40px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;padding:8px;gap:8px;font-size:12px;color:var(--muted)}
+    .mock-card .dot{height:10px;width:10px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+    /* ---- services ---- */
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .service{padding:18px;border-radius:14px;background:var(--glass-2);border:1px solid rgba(255,255,255,0.02);min-height:120px;display:flex;gap:12px;align-items:flex-start}
+    .service .icon{width:46px;height:46;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#021226;font-weight:700}
+    @media (max-width:1000px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.services-grid{grid-template-columns:1fr}}
+
+    /* ---- projects / cards ---- */
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .project-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:10px;min-height:220px}
+    .proj-img{height:120px;border-radius:10px;display:block;background-size:cover;background-position:center;box-shadow: inset 0 -30px 30px rgba(0,0,0,0.18)}
+    .proj-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted)}
+    .proj-actions{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+    .vote-btn{border:0;padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);cursor:pointer}
+    .vote-count{font-weight:700;color:var(--accent);margin-left:8px}
+
+    @media (max-width:1000px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.projects-grid{grid-template-columns:1fr}}
+
+    /* ---- blog ---- */
+    .blog-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .post{padding:16px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.03)}
+    @media (max-width:800px){.blog-list{grid-template-columns:1fr}}
+
+    /* ---- contact ---- */
+    form.contact-form{display:grid;gap:12px}
+    input,textarea{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;outline:none}
+    input::placeholder,textarea::placeholder{color:rgba(230,238,248,0.4)}
+    .send-btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021226;padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .whatsapp-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(16,185,129,0.12);color:#0ee6a8;border:1px solid rgba(16,185,129,0.06);text-decoration:none}
+
+    /* ---- login & dashboard ---- */
+    .card{padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .center{display:grid;place-items:center;padding:40px}
+    .small{font-size:13px;color:var(--muted)}
+    .muted-link{color:var(--muted);text-decoration:underline;cursor:pointer}
+
+    /* ---- footer ---- */
+    footer.site-footer{position:fixed;left:0;bottom:0;width:100%;background:linear-gradient(180deg, rgba(3,9,18,0.6), rgba(2,6,12,0.8));border-top:1px solid rgba(255,255,255,0.03);padding:10px 16px}
+    .footer-inner{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);gap:12px}
+    .socials a{margin-left:12px;color:var(--muted);text-decoration:none}
+
+    /* small helpers */
+    .hidden{display:none!important}
+    .badge{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);font-weight:600;color:var(--accent)}
+    .outline{border:1px solid rgba(255,255,255,0.03)}
+    .mb{margin-bottom:12px}
+    .mt{margin-top:12px}
+
+    /* subtle animations */
+    .fade-in{animation:fadeIn .6s var(--ease) both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  </style>
+</head>
+<body>
+
+  <!-- ============= HEADER / NAV ============= -->
+  <header class="nav" role="banner">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">ST</div>
+        <div>
+          <h4>Stantech</h4>
+          <div style="font-size:12px;color:var(--muted)">Digital products for Africa</div>
+        </div>
+      </div>
+
+      <!-- desktop menu -->
+      <nav class="menu" role="navigation" aria-label="Main navigation">
+        <a href="#home" data-link>Home</a>
+        <a href="#services" data-link>Services</a>
+        <a href="#projects" data-link>Projects</a>
+        <a href="#blog" data-link>Blog</a>
+        <a href="#contact" data-link>Contact</a>
+        <a href="#dashboard" data-link id="nav-dashboard">Dashboard</a>
+        <a class="cta-btn" href="#projects" data-link>Explore Projects</a>
+      </nav>
+
+      <!-- mobile menu trigger -->
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+
+    <!-- mobile menu panel (hidden by default) -->
+    <div id="mobilePanel" class="mobile-menu hidden" style="right:20px;top:72px;">
+      <a href="#home" data-link style="display:block;padding:8px 10px">Home</a>
+      <a href="#services" data-link style="display:block;padding:8px 10px">Services</a>
+      <a href="#projects" data-link style="display:block;padding:8px 10px">Projects</a>
+      <a href="#blog" data-link style="display:block;padding:8px 10px">Blog</a>
+      <a href="#contact" data-link style="display:block;padding:8px 10px">Contact</a>
+      <a href="#dashboard" data-link style="display:block;padding:8px 10px">Dashboard</a>
+    </div>
+  </header>
+
+  <!-- ============= MAIN CONTENT (SPA-style sections) ============= -->
+  <main>
+
+    <!-- ====== HOME ====== -->
+    <section id="home" class="container hero" data-page>
+      <div class="hero-left">
+        <div class="hero-card fade-in">
+          <div class="tagline">Powered by Stantech</div>
+          <h1>Build smarter tools. Scale faster.</h1>
+          <p class="lead">We create digital products — AI tools, generators, marketplaces & SaaS — designed for African markets. Launch faster with clean design & real results.</p>
+
+          <div class="actions">
+            <a href="#projects" data-link class="cta-btn">Explore Projects</a>
+            <a href="#contact" data-link class="secondary">Contact Us</a>
+          </div>
+
+          <div style="display:flex;gap:12px;margin-top:18px;align-items:center">
+            <div class="badge">Launch-ready</div>
+            <div class="small" style="margin-left:8px">Sample projects coming soon: ALPHA.10, Drone Pilot, CRM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <!-- Visual mockup on the right -->
+        <div class="mockup">
+          <div class="screen">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-weight:700">ALPHA.10</div>
+              <div style="font-size:12px;color:var(--muted)">v0.1 • demo</div>
+            </div>
+            <div class="pill"></div>
+
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+              <div style="width:56px;height:56;border-radius:8px;background:linear-gradient(180deg,#012739,#023a52);display:grid;place-items:center;font-weight:700">AI</div>
+              <div>
+                <div style="font-weight:700">Crop Detector</div>
+                <div style="font-size:12px;color:var(--muted)">Fast disease detection</div>
+              </div>
+            </div>
+
+            <div class="mock-grid" style="margin-top:12px">
+              <div class="mock-card"><div class="dot"></div> Field Scan</div>
+              <div class="mock-card"><div class="dot"></div> Reports</div>
+              <div class="mock-card"><div class="dot"></div> Drone Ops</div>
+              <div class="mock-card"><div class="dot"></div> CRM</div>
+            </div>
+
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
+              <div style="font-size:12px;color:var(--muted)">Status</div>
+              <div style="font-weight:700;color:var(--accent)">Alpha</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SERVICES ====== -->
+    <section id="services" class="container" data-page style="padding-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:18px">
+        <div>
+          <h2>Services</h2>
+          <div class="small">Tools, apps and design systems for businesses and farms.</div>
+        </div>
+        <div class="small">Need something custom? <span class="muted-link" id="open-contact">Contact us</span></div>
+      </div>
+
+      <div class="services-grid">
+        <div class="service">
+          <div class="icon">AI</div>
+          <div>
+            <strong>AI Product Development</strong>
+            <div class="small">Custom AI models for crop detection, chatbots, and automation.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">WEB</div>
+          <div>
+            <strong>Web & PWA</strong>
+            <div class="small">Progressive web apps, responsive websites, and marketplaces.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">CRM</div>
+          <div>
+            <strong>SaaS & Tools</strong>
+            <div class="small">Lightweight CRMs, invoicing, and dashboard tools for SMEs.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">DRN</div>
+          <div>
+            <strong>Drone Integration</strong>
+            <div class="small">Route planning, fleet tracking and delivery integrations.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">UX</div>
+          <div>
+            <strong>Design & Branding</strong>
+            <div class="small">Interface design, logos, product design systems and templates.</div>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="icon">EDU</div>
+          <div>
+            <strong>Training & Mentorship</strong>
+            <div class="small">Workshops and mentor series for young builders.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PROJECTS / PORTFOLIO ====== -->
+    <section id="projects" class="container" data-page style="padding-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <h2>Projects & Portfolio</h2>
+          <div class="small">Vote for projects you like — votes are stored in your browser.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="small">Sort:</div>
+          <select id="projectSort" style="background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--muted)">
+            <option value="featured">Featured</option>
+            <option value="votes">Most Votes</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="projectsGrid" class="projects-grid">
+        <!-- Project cards will be injected by JS -->
+      </div>
+
+      <div style="margin-top:18px">
+        <small class="small">Tip: Votes persist in your browser (LocalStorage). They are not public or shared across devices.</small>
+      </div>
+    </section>
+
+    <!-- ====== BLOG ====== -->
+    <section id="blog" class="container" data-page style="padding-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div>
+          <h2>Blog</h2>
+          <div class="small">Short posts about product building, growth, and tech in Kenya.</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <input id="blogSearch" placeholder="Search posts..." style="padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#e6eef8" />
+          <button class="secondary" id="clearSearch">Clear</button>
+        </div>
+      </div>
+
+      <div id="blogList" class="blog-list">
+        <!-- sample posts -->
+        <article class="post">
+          <h3>How ALPHA.10 speeds up farm diagnostics</h3>
+          <div class="small">Nov 2025 • by Stantech</div>
+          <p class="mt">ALPHA.10 uses quick image analysis to spot common leaf diseases and provides recommendations to smallholder farmers. (Sample post.)</p>
+        </article>
+
+        <article class="post">
+          <h3>From idea to PWA in 7 days</h3>
+          <div class="small">Oct 2025 • by Stantech</div>
+          <p class="mt">A practical checklist to convert a web app into a PWA your customers can install from the browser.</p>
+        </article>
+
+        <article class="post">
+          <h3>Building a simple CRM for Kenyan SMEs</h3>
+          <div class="small">Sep 2025 • by Stantech</div>
+          <p class="mt">Design decisions for low-bandwidth users and mobile-first interfaces.</p>
+        </article>
+
+        <article class="post">
+          <h3>Mentor Series: Teaching teens to build</h3>
+          <div class="small">Aug 2025 • by Stantech</div>
+          <p class="mt">How to structure practical workshops for students learning product design.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====== CONTACT ====== -->
+    <section id="contact" class="container" data-page style="padding-top:20px">
+      <div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:260px">
+          <h2>Contact</h2>
+          <div class="small">Have an idea or want a custom product? Send us a message — or reach out on WhatsApp.</div>
+
+          <div style="margin-top:12px">
+            <div class="small">Email</div>
+            <div style="font-weight:700">stantech2025@gmail.com</div>
+            <div class="small mt">WhatsApp</div>
+            <!-- WhatsApp button uses phone number from your project notes -->
+            <a class="whatsapp-btn" id="whatsappLink" href="https://wa.me/234717774291" target="_blank" rel="noopener">
+              💬 Message on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:320px">
+          <div class="card">
+            <form id="contactForm" class="contact-form" onsubmit="return false;">
+              <label class="small">Name</label>
+              <input type="text" id="cname" placeholder="Your name" required />
+              <label class="small">Email</label>
+              <input type="email" id="cemail" placeholder="you@example.com" required />
+              <label class="small">Message</label>
+              <textarea id="cmessage" placeholder="Tell us about your project..." rows="5" required></textarea>
+
+              <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+                <button class="send-btn" id="sendContact">Send Message</button>
+                <button class="secondary" id="contactMail">Open Email</button>
+              </div>
+
+              <div id="contactStatus" class="small mt" style="display:none"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== USER DASHBOARD & LOGIN (SIMPLE) ====== -->
+    <section id="dashboard" class="container" data-page style="padding-top:20px">
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <!-- Login card -->
+        <div style="flex:1;min-width:320px">
+          <div class="card">
+            <h3 id="loginTitle">Login to Stantech Dashboard</h3>
+            <p class="small">This is a lightweight local login — for demo only. No passwords stored on server.</p>
+            <div id="loginForm">
+              <label class="small">Username</label>
+              <input type="text" id="loginUser" placeholder="Username" />
+              <label class="small">Password</label>
+              <input type="password" id="loginPass" placeholder="Password" />
+              <div style="display:flex;gap:10px;margin-top:12px">
+                <button class="send-btn" id="loginBtn">Login</button>
+                <button class="secondary" id="guestBtn">Continue as Guest</button>
+              </div>
+              <div id="loginMsg" class="small mt" style="display:none"></div>
+            </div>
+
+            <div id="loggedInView" class="hidden">
+              <div class="small">Logged in as <span id="loggedUser" style="font-weight:700"></span></div>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <button class="send-btn" id="gotoDashboard">Open Dashboard</button>
+                <button class="secondary" id="logoutBtn">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard preview -->
+        <div style="flex:2;min-width:320px">
+          <div class="card">
+            <h3>Dashboard Preview</h3>
+            <p class="small">After login you can access a simple dashboard with placeholder content, links to your votes, and projects you liked.</p>
+
+            <div style="margin-top:12px">
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <div class="badge">Profile</div>
+                <div class="badge">My Votes</div>
+                <div class="badge">My Projects</div>
+                <div class="badge">Settings</div>
+              </div>
+
+              <div id="dashboardMain" class="mt hidden">
+                <h4 style="margin-top:12px">Welcome back, <span id="dashName"></span></h4>
+                <p class="small">This is your placeholder dashboard. You can show user-specific data here (local-only demo).</p>
+
+                <div id="userVotes" style="margin-top:12px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============= FOOTER ============= -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div>© <strong>Stantech</strong> 2025 • Built with ❤️</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="small">stantech2025@gmail.com</div>
+        <div class="socials">
+          <a href="#" title="Twitter" aria-label="Twitter">✦</a>
+          <a href="#" title="GitHub" aria-label="GitHub">⎇</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    /* ===========================
+       Stantech single-file JS
+       - Handles navigation (spa-like)
+       - Renders project cards with voting (LocalStorage)
+       - Contact form client-side handler (opens mailto + shows status)
+       - Simple login (sessionStorage) and dashboard rendering
+       - Blog search
+       - Sorting projects
+       =========================== */
+
+    // ---------- Data: sample projects ----------
+    const SAMPLE_PROJECTS = [
+      {
+        id: 'alpha10',
+        title: 'COMING SOON ALPHA.10 Crop Detector',
+        tag: 'Agritech',
+        desc: 'A web app that analyses crop images and detects common diseases with recommendations.',
+        img: '', // generated placeholder
+        featured: true
+      },
+      {
+        id: 'dronePilot',
+        title: 'Delivery Drone Pilot',
+        tag: 'Logistics',
+        desc: 'Prototype software for last-mile delivery drones and route monitoring.',
+        img: '',
+        featured: true
+      },
+      {
+        id: 'crmLite',
+        title: 'Stantech CRM Lite',
+        tag: 'SaaS',
+        desc: 'Lightweight CRM for small businesses to manage customers and invoices.',
+        img: ''
+      },
+      {
+        id: 'fleetTracker',
+        title: 'Fleet Tracker',
+        tag: 'Transport',
+        desc: 'Realtime tracking and route optimization tool for minibuses and taxis.',
+        img: ''
+      },
+      {
+        id: 'pwaMarket',
+        title: 'PWA Market',
+        tag: 'Products',
+        desc: 'Mobile-first marketplace for local agri-producers.',
+        img: ''
+      },
+      {
+        id: 'mentorSeries',
+        title: 'Mentor Series',
+        tag: 'Community',
+        desc: 'Training modules and hands-on workshops for young builders.',
+        img: ''
+      }
+    ];
+
+    // Utility: make placeholder image (CSS gradient) and return data URL via SVG
+    function placeholderImage(title){
+      const w=800,h=480;
+      const text = title.replace(/&/g,'&amp;');
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>
+        <defs>
+          <linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='#07293a'/><stop offset='1' stop-color='#042a45'/></linearGradient>
+        </defs>
+        <rect width='100%' height='100%' fill='url(#g)'/>
+        <text x='50%' y='50%' font-size='28' text-anchor='middle' fill='#9fcff6' font-family='Arial' dy='.35em'>${text}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    // Initialize project images
+    SAMPLE_PROJECTS.forEach(p => p.img = placeholderImage(p.title));
+
+    // ---------- Navigation logic (SPA-like) ----------
+    const pages = Array.from(document.querySelectorAll('[data-page]'));
+    function showPage(hash){
+      // Accept hashes like #home, #services, #projects, #blog, #contact, #dashboard
+      if(!hash || hash === '#') hash = '#home';
+      // hide all
+      pages.forEach(s => s.classList.add('hidden'));
+      // find element with id == hash substring
+      const id = hash.replace('#','');
+      const el = document.getElementById(id);
+      if(el){
+        el.classList.remove('hidden');
+        el.scrollIntoView({behavior:'smooth'});
+      } else {
+        // fallback to home
+        document.getElementById('home').classList.remove('hidden');
+      }
+      // close mobile panel if open
+      mobilePanel.classList.add('hidden');
+    }
+
+    // attach to links
+    document.querySelectorAll('[data-link]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const href = a.getAttribute('href') || '#home';
+        location.hash = href;
+        showPage(href);
+      });
+    });
+
+    // on hash change
+    window.addEventListener('hashchange', ()=> showPage(location.hash));
+    // initial
+    if(!location.hash) location.hash = '#home';
+    showPage(location.hash);
+
+    // mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobilePanel = document.getElementById('mobilePanel');
+    hamburger.addEventListener('click', ()=> mobilePanel.classList.toggle('hidden'));
+
+    // quick contact open
+    document.getElementById('open-contact').addEventListener('click', ()=>{
+      location.hash = '#contact'; showPage('#contact');
+    });
+    // ---------- Projects rendering & voting ----------
+    const projectsGrid = document.getElementById('projectsGrid');
+    const STORAGE_KEY = 'stantech_votes_v1';
+
+    // Get votes object from localStorage
+    function loadVotes(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      }catch(e){ return {} }
+    }
+    function saveVotes(votes){ localStorage.setItem(STORAGE_KEY, JSON.stringify(votes)); }
+
+    // vote for a project id
+    function voteFor(id){
+      const votes = loadVotes();
+      votes[id] = (votes[id] || 0) + 1;
+      saveVotes(votes);
+      renderProjects(); // rerender to update counts
+    }
+
+    // build a project card element
+    function buildProjectCard(p){
+      const votes = loadVotes();
+      const count = votes[p.id] || 0;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'project-card fade-in';
+      wrap.innerHTML = `
+        <div class="proj-img" style="background-image:url('${p.img}');"></div>
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div style="max-width:70%"><strong>${p.title}</strong><div class="small">${p.desc}</div></div>
+          <div style="text-align:right">
+            <div class="small">Tag</div>
+            <div class="tag">${p.tag}</div>
+          </div>
+        </div>
+        <div class="proj-tags"></div>
+        <div class="proj-actions">
+          <div>
+            <button class="secondary" data-open="${p.id}">Open</button>
+            <button class="secondary" data-demo="${p.id}">Demo</button>
+          </div>
+          <div>
+            <button class="vote-btn" data-vote="${p.id}">Vote</button>
+            <span class="vote-count" id="vc-${p.id}">${count}</span>
+          </div>
+        </div>
+      `;
+
+      // tags area
+      const tagsWrap = wrap.querySelector('.proj-tags');
+      const t = document.createElement('div'); t.className='tag'; t.textContent = p.tag;
+      tagsWrap.appendChild(t);
+
+      // attach vote handler
+      wrap.querySelector('[data-vote]').addEventListener('click', ()=>{
+        voteFor(p.id);
+        // micro-feedback
+        const el = document.getElementById('vc-'+p.id);
+        el.animate([{transform:'scale(1)'},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:220,easing:'ease-out'});
+      });
+
+      // open & demo buttons can link to pages (for demo they show a modal)
+      wrap.querySelector('[data-open]').addEventListener('click', ()=>{
+        alert(`${p.title}\n\n${p.desc}\n\nFeature: ${p.tag}\n\n(This is a placeholder project page for demo.)`);
+      });
+      wrap.querySelector('[data-demo]').addEventListener('click', ()=>{
+        alert(`${p.title} — Demo\n\nPreviewing demo is not available in this static build. Use this space to link to live demos or project pages.`);
+      });
+
+      return wrap;
+    }
+
+    // render projects with sorting
+    function renderProjects(sort='featured'){
+      // clear
+      projectsGrid.innerHTML = '';
+      const votes = loadVotes();
+      let list = Array.from(SAMPLE_PROJECTS);
+
+      if(sort === 'votes'){
+        list.sort((a,b)=> (votes[b.id]||0) - (votes[a.id]||0));
+      } else if(sort === 'name'){
+        list.sort((a,b)=> a.title.localeCompare(b.title));
+      } else {
+        // featured first then featured==false
+        list.sort((a,b)=> (b.featured?1:0) - (a.featured?1:0));
+      }
+
+      list.forEach(p => projectsGrid.appendChild(buildProjectCard(p)));
+    }
+
+    // initial render
+    renderProjects();
+
+    // sort control
+    document.getElementById('projectSort').addEventListener('change', (e)=>{
+      renderProjects(e.target.value);
+    });
+
+    // ---------- Contact form logic ----------
+    const contactForm = document.getElementById('contactForm');
+    const contactStatus = document.getElementById('contactStatus');
+    document.getElementById('sendContact').addEventListener('click', ()=>{
+      const name = document.getElementById('cname').value.trim();
+      const email = document.getElementById('cemail').value.trim();
+      const message = document.getElementById('cmessage').value.trim();
+
+      if(!name || !email || !message){
+        contactStatus.style.display='block'; contactStatus.style.color='var(--danger)'; contactStatus.textContent='Please fill all fields.';
+        return;
+      }
+
+      // Since we have no backend in this single-file site, we open mailto with prefilled content
+      const subject = encodeURIComponent(`Contact from ${name} via Stantech site`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      // Show a success message and open the user's email client
+      contactStatus.style.display='block'; contactStatus.style.color='var(--success)'; contactStatus.textContent='Opening your email client...';
+      setTimeout(()=> {
+        window.location.href = `mailto:stantech2025@gmail.com?subject=${subject}&body=${body}`;
+        contactStatus.textContent = 'If your email client did not open, please email: stantech2025@gmail.com';
+      }, 600);
+    });
+
+    // "Open Email" button
+    document.getElementById('contactMail').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const subject = encodeURIComponent(`Inquiry to Stantech`);
+      window.location.href = `mailto:stantech2025@gmail.com?subject=${subject}`;
+    });
+
+    // WhatsApp link: uses phone from project notes (format: country code + number)
+    document.getElementById('whatsappLink').addEventListener('click', ()=>{
+      // note: opens WhatsApp Web or mobile app
+    });
+
+    // ---------- Blog search ----------
+    document.getElementById('blogSearch').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase();
+      Array.from(document.querySelectorAll('#blogList .post')).forEach(post=>{
+        const text = post.textContent.toLowerCase();
+        post.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+    document.getElementById('clearSearch').addEventListener('click', ()=>{
+      document.getElementById('blogSearch').value=''; document.getElementById('blogSearch').dispatchEvent(new Event('input'));
+    });
+
+    // ---------- Login & Dashboard ----------
+    const loginBtn = document.getElementById('loginBtn');
+    const guestBtn = document.getElementById('guestBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const gotoDashboardBtn = document.getElementById('gotoDashboard');
+
+    function getSessionUser(){
+      try{
+        return JSON.parse(sessionStorage.getItem('stantech_user') || 'null');
+      }catch(e){return null}
+    }
+    function setSessionUser(u){
+      sessionStorage.setItem('stantech_user', JSON.stringify(u));
+    }
+    function clearSessionUser(){ sessionStorage.removeItem('stantech_user'); }
+
+    function updateLoginUI(){
+      const user = getSessionUser();
+      if(user){
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('loggedInView').classList.remove('hidden');
+        document.getElementById('loggedUser').textContent = user.username;
+        document.getElementById('dashName').textContent = user.username;
+        document.getElementById('dashboardMain').classList.remove('hidden');
+      } else {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('loggedInView').classList.add('hidden');
+        document.getElementById('dashboardMain').classList.add('hidden');
+      }
+    }
+
+    // login handler (demo)
+    loginBtn.addEventListener('click', ()=>{
+      const username = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value;
+      const loginMsg = document.getElementById('loginMsg');
+      if(!username || !pass){
+        loginMsg.style.display='block'; loginMsg.textContent='Please enter username and password.'; return;
+      }
+      // Demo: any username/password accepted. Save to sessionStorage.
+      setSessionUser({username, loggedAt:Date.now()});
+      loginMsg.style.display='block'; loginMsg.textContent='Logging in...';
+      setTimeout(()=> {
+        loginMsg.style.display='none';
+        updateLoginUI();
+        // navigate to dashboard main view
+        location.hash = '#dashboard'; showPage('#dashboard');
+      },500);
+    });
+
+    guestBtn.addEventListener('click', ()=>{
+      setSessionUser({username:'Guest', loggedAt:Date.now()});
+      updateLoginUI();
+    });
+
+    logoutBtn.addEventListener('click', ()=>{
+      clearSessionUser();
+      updateLoginUI();
+      document.getElementById('loginMsg').style.display='block';
+      document.getElementById('loginMsg').textContent='Logged out.';
+      setTimeout(()=> document.getElementById('loginMsg').style.display='none',1000);
+    });
+
+    gotoDashboardBtn.addEventListener('click', ()=>{
+      // For demo, show a modal or just scroll to dashboard main content
+      location.hash = '#dashboard'; showPage('#dashboard');
+    });
+
+    // Render user's votes in dashboard
+    function renderUserVotes(){
+      const u = getSessionUser();
+      const el = document.getElementById('userVotes');
+      if(!u){ el.innerHTML = '<div class="small">Login to see your votes.</div>'; return; }
+      const votes = loadVotes();
+      const items = Object.entries(votes);
+      if(items.length===0){ el.innerHTML = '<div class="small">You haven\'t voted for any projects yet.</div>'; return; }
+      const list = items.map(([id,count])=>{
+        const p = SAMPLE_PROJECTS.find(pp=>pp.id===id);
+        return `<div style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px">
+          <strong>${p? p.title : id}</strong>
+          <div class="small">Votes in this browser: <span style="font-weight:700;color:var(--accent)">${count}</span></div>
+        </div>`;
+      }).join('');
+      el.innerHTML = list;
+    }
+
+    // update periodically (when login UI changes)
+    setInterval(()=> {
+      updateLoginUI();
+      renderUserVotes();
+    },600);
+
+    // initial UI update
+    updateLoginUI();
+
+    // ---------- small UX polish: keyboard shortcut to clear votes (dev only) ----------
+    window.addEventListener('keydown', (e)=>{
+      // Ctrl+Shift+V clears votes (developer helper) — keep disabled unless triggered
+      if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='v'){
+        if(confirm('Clear all stored votes for Stantech (local only)?')){
+          localStorage.removeItem(STORAGE_KEY);
+          renderProjects();
+        }
+      }
+    });
+
+    // ---------- ensure footer doesn't cover content on small screens ----------
+    function adjustBodyPadding(){
+      const footer = document.querySelector('footer.site-footer');
+      const h = footer.getBoundingClientRect().height;
+      document.body.style.paddingBottom = (h+12) + 'px';
+    }
+    window.addEventListener('resize', adjustBodyPadding);
+    adjustBodyPadding();
+
+    // ---------- Accessibility: focus outline toggle ----------
+    document.body.addEventListener('keydown', (e)=>{
+      if(e.key==='Tab') document.body.classList.add('show-focus');
+    });
+
+  </script>
+</body>
+</html>
